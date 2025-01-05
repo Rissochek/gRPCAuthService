@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package protoauth;
+
+option go_package = "internal/proto";
+
+service Auth {
+    rpc Registration(RegistrationRequest) returns (RegistrationReply) {}
+    rpc Login(LoginRequest) returns (LoginReply) {}
+}
+
+message RegistrationRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message RegistrationReply {
+    string result = 1;
+}
+
+message LoginReply {
+    string result = 1;
+}
