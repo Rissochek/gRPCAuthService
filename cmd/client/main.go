@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	addr = flag.String("address", "localhost:8080", "address to connect")
+	addr = flag.String("address", "localhost:8888", "address to connect")
 )
 
 func main(){
@@ -26,12 +26,12 @@ func main(){
 	c := pb.NewAuthClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.Registration(ctx, &pb.RegistrationRequest{Username: "rissochek", Password: "1234"})
+	r, err := c.Registration(ctx, &pb.RegistrationRequest{Username: "rissochek", Password: "123"})
 	if err != nil{
 		log.Fatalf("failed to registrate: %v", err)
 	}
 	log.Printf("reply from server: %v", r.GetResult())
-	l, err := c.Login(ctx, &pb.LoginRequest{Username: "rissochek", Password: "1234"})
+	l, err := c.Login(ctx, &pb.LoginRequest{Username: "rissochek", Password: "123"})
 	log.Printf("reply from server: %v", l.GetResult())
 	if err != nil{
 		log.Fatalf("failed to login: %v", err)

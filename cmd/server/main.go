@@ -7,15 +7,16 @@ import (
 	"log"
 	"net"
 
-	pb "AuthProject/internal/proto"
-	"AuthProject/internal/utils"
-
 	"google.golang.org/grpc"
+
+	"AuthProject/internal/database"
+	"AuthProject/internal/model"
+	pb "AuthProject/internal/proto"
 )
 
 var (
-	port = flag.Int("port", 8080, "server port")
-	filename = flag.String("fn", "database", "File with user data")
+	port = flag.Int("port", 8888, "server port")
+	db = database.InitDataBase()
 )
 
 type server struct{
@@ -23,21 +24,23 @@ type server struct{
 }
 
 func(s *server) Registration(_ context.Context, reg_request *pb.RegistrationRequest) (*pb.RegistrationReply, error){
-	file := utils.OpenFile(filename)
-	defer utils.CloseFile(file)
-	utils.CreateUser(&reg_request.Username, &reg_request.Password, file)
+	user := model.User{Usermame: reg_request.Username, Password: reg_request.Password}
+	err := database.AddUserToDataBase(*db, &user)
+	if err != nil{
+		return &pb.RegistrationReply{Result: err.Error()}, err
+	}
 	return &pb.RegistrationReply{Result: "Success"}, nil
 }
 
 func(s *server) Login(_ context.Context, log_request *pb.LoginRequest) (*pb.LoginReply, error){
-	file := utils.OpenFile(filename)
-	defer utils.CloseFile(file)
-	err := utils.SearchInFile(&log_request.Username, &log_request.Password, file)
+	user := model.User{Usermame: log_request.Username, Password: log_request.Password}
+	err := database.SearchUserInDB(*db, &user)
 	if err != nil{
-		return &pb.LoginReply{Result: "Fail"}, err
+		return &pb.LoginReply{Result: err.Error()}, err
 	}
 	return &pb.LoginReply{Result: "Success"}, nil
 }
+
 func main(){
 	flag.Parse()
 	lsn, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
