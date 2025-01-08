@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.1
-// source: internal/proto/auth_service.proto
+// source: auth_service.proto
 
 package proto
 
@@ -60,15 +60,14 @@ func (c *authClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.C
 }
 
 // AuthServer is the server API for Auth service.
-// All implementations must embed UnimplementedAuthServer
+// All implementations should embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
 	Registration(context.Context, *RegistrationRequest) (*RegistrationReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	mustEmbedUnimplementedAuthServer()
 }
 
-// UnimplementedAuthServer must be embedded to have
+// UnimplementedAuthServer should be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
@@ -81,8 +80,7 @@ func (UnimplementedAuthServer) Registration(context.Context, *RegistrationReques
 func (UnimplementedAuthServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
-func (UnimplementedAuthServer) testEmbeddedByValue()              {}
+func (UnimplementedAuthServer) testEmbeddedByValue() {}
 
 // UnsafeAuthServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to AuthServer will
@@ -155,5 +153,5 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "internal/proto/auth_service.proto",
+	Metadata: "auth_service.proto",
 }

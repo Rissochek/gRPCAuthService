@@ -2,11 +2,23 @@ syntax = "proto3";
 
 package protoauth;
 
+import "google/api/annotations.proto";
+
 option go_package = "internal/proto";
 
 service Auth {
-    rpc Registration(RegistrationRequest) returns (RegistrationReply) {}
-    rpc Login(LoginRequest) returns (LoginReply) {}
+    rpc Registration(RegistrationRequest) returns (RegistrationReply) {
+        option (google.api.http) = {
+            post: "/api/v1/reg"
+            body: "*"
+        };
+    }
+    rpc Login(LoginRequest) returns (LoginReply) {
+        option (google.api.http) = {
+            post: "/api/v1/login"
+            body: "*"
+        };
+    }
 }
 
 message RegistrationRequest {
