@@ -3,7 +3,9 @@ module AuthProject
 go 1.23.3
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.25.1
+	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.31.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20241219192143-6b3ec007d9bb
 	google.golang.org/grpc v1.69.2

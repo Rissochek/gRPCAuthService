@@ -37,4 +37,5 @@ message RegistrationReply {
 
 message LoginReply {
     string result = 1;
+    string token = 2;
 }

@@ -20,7 +20,7 @@ func InitDataBase() (*gorm.DB){
 	return db
 }
 
-func AddUserToDataBase(db gorm.DB, user *model.User) error{
+func AddUserToDataBase(db *gorm.DB, user *model.User) error{
 	hashed_user_password := utils.GenerateHash(user.Password)
 	user.Password = hashed_user_password
 
@@ -31,7 +31,7 @@ func AddUserToDataBase(db gorm.DB, user *model.User) error{
 	return nil
 }
 
-func SearchUserInDB(db gorm.DB, user *model.User) error{
+func SearchUserInDB(db *gorm.DB, user *model.User) error{
 	target_user := model.User{}
 	if err := db.Where(&model.User{Usermame: user.Usermame}).First(&target_user).Error; err != nil{
 		return err
