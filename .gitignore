@@ -1,2 +1,5 @@
 /googleapis
 /save_folder
+go.mod
+go.sum
+.env
